@@ -10,7 +10,7 @@ export const createCategory = t.Omit(_createCategories, [
 	"createdDate",
 	"updatedDate",
 ]);
-export const selectTask = _selectCategories;
+export const selectCategories = _selectCategories;
 
 // Modelos para lógica
 export type Category = typeof table.categoriesTable.$inferSelect;
