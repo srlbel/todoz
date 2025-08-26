@@ -24,11 +24,12 @@ export const taskRoutes = new Elysia({ prefix: "/tasks", tags: ["Tasks"] })
 	.get(
 		"/:id",
 		async ({ params, set }) => {
-			const task = await db
-				.select()
-				.from(table.tasksTable)
-				.where(eq(table.tasksTable.id, params.id))
-				.get();
+			const task = await db.query.tasksTable.findFirst({
+				with: {
+					category: true,
+				},
+				where: eq(tasksTable.id, params.id),
+			});
 
 			if (!task) {
 				set.status = 404;
