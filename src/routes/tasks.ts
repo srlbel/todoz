@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import Elysia, { t } from "elysia";
 import { db } from "../db";
-import { table } from "../db/schema";
+import { table, tasksTable, categoriesTable } from "../db/schema";
 import type { CreateTask } from "../models/tasks";
 import { createTask } from "../models/tasks";
 
@@ -9,7 +9,11 @@ export const taskRoutes = new Elysia({ prefix: "/tasks", tags: ["Tasks"] })
 	.get(
 		"/",
 		async () => {
-			return await db.select().from(table.tasksTable);
+			return await db.query.tasksTable.findMany({
+				with: {
+					category: true,
+				},
+			});
 		},
 		{
 			detail: {

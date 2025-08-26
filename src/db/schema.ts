@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 const timestamps = {
@@ -24,6 +25,19 @@ export const categoriesTable = sqliteTable("categories_table", {
 	color: text(),
 	...timestamps,
 });
+
+// Relations
+
+export const taskRelations = relations(tasksTable, ({ one }) => ({
+	category: one(categoriesTable, {
+		fields: [tasksTable.category],
+		references: [categoriesTable.id],
+	}),
+}));
+
+export const categoriesRelations = relations(categoriesTable, ({ many }) => ({
+	tasks: many(tasksTable),
+}));
 
 export const table = {
 	tasksTable,
